@@ -1,6 +1,6 @@
-DockerName=MADGraphDocker
+sudo docker pull skaskid470/madgraph
 
-sudo docker
+DockerName=MADGraphDocker
 
 cd 
 cd Documents
@@ -13,12 +13,12 @@ echo $OUTPUT
 mkdir MADGraphScripts 
 cd $_
 
-sudo docker run -dit --rm --name $DockerName -v $OUTPUT/models:/var/UFO_models -v $OUTPUT/outputs:/var/MG_outputs hfukuda/madgraph
+sudo docker run -dit --rm --name $DockerName -v $OUTPUT/models:/var/UFO_models -v $OUTPUT/outputs:/var/MG_outputs skaskid470/madgraph
 
 ######################## Setup directories for easy saving of results ############
 ############## Variables for the scripts #########################################
-BACKGROUNDRUNS=20
-SIGNALRUNS=5
+BACKGROUNDRUNS=2
+SIGNALRUNS=2
 EVENTSPERRUN=10000
 ############## Variables for the scripts #########################################
 ############## Background events #################################################
@@ -54,9 +54,9 @@ set etaj = 5
 0
 EOM
 
-sudo docker cp $OUTPUT/MADGraphScripts/$FILE MADGraphDocker:/var/MG_outputs
+sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerName:/var/MG_outputs
 
-sudo docker exec -it MADGraphDocker /home/hep/MG5_aMC_v2_6_3_2/bin/mg5_aMC  $FILE
+sudo docker exec -it $DockerName /home/hep/MG5_aMC_v2_6_3_2/bin/mg5_aMC  $FILE
 #############################################################
 ### End of process generator  ###############################
 #############################################################
@@ -94,9 +94,9 @@ EOM
 
 cd $WORKINGPATH
 
-sudo docker cp $OUTPUT/MADGraphScripts/$FILE MADGraphDocker:/var/MG_outputs
+sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerName:/var/MG_outputs
 
-sudo docker exec -it MADGraphDocker /home/hep/MG5_aMC_v2_6_3_2/bin/mg5_aMC  $FILE
+sudo docker exec -it $DockerName /home/hep/MG5_aMC_v2_6_3_2/bin/mg5_aMC  $FILE
 #############################################################
 ### End of process generator  ###############################
 #############################################################
@@ -133,9 +133,9 @@ EOM
 
 cd $WORKINGPATH
 
-sudo docker cp $OUTPUT/MADGraphScripts/$FILE MADGraphDocker:/var/MG_outputs
+sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerName:/var/MG_outputs
 
-sudo docker exec -it MADGraphDocker /home/hep/MG5_aMC_v2_6_3_2/bin/mg5_aMC  $FILE
+sudo docker exec -it $DockerName /home/hep/MG5_aMC_v2_6_3_2/bin/mg5_aMC  $FILE
 
 #############################################################
 ### End of process generator  ###############################
@@ -176,16 +176,16 @@ set etaj = 5
 0
 EOM
 
-sudo docker cp $OUTPUT/MADGraphScripts/$FILE MADGraphDocker:/var/MG_outputs
+sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerName:/var/MG_outputs
 
-sudo docker exec -it MADGraphDocker /home/hep/MG5_aMC_v2_6_3_2/bin/mg5_aMC  $FILE
+sudo docker exec -it $DockerName /home/hep/mg5amcnlo/bin/mg5_aMC  $FILE
 
 #############################################################
 ### End of process generator  ###############################
 #############################################################
 done
 
-sudo docker kill MADGraphDocker
+sudo docker kill $DockerName
 
 cd .. 
 sudo rm -r MADGraphScripts
