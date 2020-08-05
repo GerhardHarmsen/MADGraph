@@ -7,8 +7,6 @@ RUN apt-get update
 RUN apt-get install -y --no-install-recommends \
 wget ca-certificates python gfortran build-essential ghostscript vim libboost-all-dev bzr
 
-ENV LHAPDF
-
 WORKDIR /home/hep
 
 ENV MG_VERSION="mg5amcnlo"
@@ -24,7 +22,7 @@ RUN echo install Delphes | /home/hep/${MG_VERSION}/bin/mg5_aMC
 RUN echo install ExRootAnalysis | /home/hep/${MG_VERSION}/bin/mg5_aMC
 RUN printf 'install pythia8\ny\n' | /home/hep/${MG_VERSION}/bin/mg5_aMC
 RUN echo install MadAnalysis5 |  /home/hep/${MG_VERSION}/bin/mg5_aMC
-RUN echo lhapdf6
+RUN echo lhapdf6 |  /home/hep/${MG_VERSION}/bin/mg5_aMC
 
 # disable autoupdate
 # RUN rm /home/hep/${MG_VERSION}/input/.autoupdate
