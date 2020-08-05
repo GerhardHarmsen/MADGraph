@@ -1,17 +1,17 @@
-FROM rootproject/root-ubuntu16
+FROM rootproject/root latest
 
 USER root
 
 RUN apt-get update
 
 RUN apt-get install -y --no-install-recommends \
-wget ca-certificates python gfortran build-essential ghostscript vim libboost-all-dev
+wget ca-certificates python gfortran build-essential ghostscript vim libboost-all-dev bzr
 
 WORKDIR /home/hep
 
-ENV MG_VERSION="MG5_aMC_v2_6_3_2"
+ENV MG_VERSION="mg5amcnlo"
 
-RUN wget --quiet -O- https://launchpad.net/mg5amcnlo/2.0/2.6.x/+download/MG5_aMC_v2.6.3.2.tar.gz | tar xzf -
+RUN bzr branch lp:mg5amcnlo
 WORKDIR /home/hep/${MG_VERSION}
 
 ENV ROOTSYS /usr/local
@@ -24,7 +24,7 @@ RUN printf 'install pythia8\ny\n' | /home/hep/${MG_VERSION}/bin/mg5_aMC
 RUN echo install MadAnalysis5 |  /home/hep/${MG_VERSION}/bin/mg5_aMC
 
 # disable autoupdate
-RUN rm /home/hep/${MG_VERSION}/input/.autoupdate
+# RUN rm /home/hep/${MG_VERSION}/input/.autoupdate
 
 WORKDIR /home/hep/${MG_VERSION}/HEPTools/lhapdf6/share/LHAPDF
 # Download a default PDF
