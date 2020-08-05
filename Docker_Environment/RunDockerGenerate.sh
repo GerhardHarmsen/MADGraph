@@ -56,7 +56,7 @@ EOM
 
 sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerName:/var/MG_outputs
 
-sudo docker exec -it $DockerName /home/hep/MG5_aMC_v2_6_3_2/bin/mg5_aMC  $FILE
+sudo docker exec -it $DockerName /home/hep/mg5amcnlo/bin/mg5_aMC  $FILE
 #############################################################
 ### End of process generator  ###############################
 #############################################################
@@ -96,7 +96,7 @@ cd $WORKINGPATH
 
 sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerName:/var/MG_outputs
 
-sudo docker exec -it $DockerName /home/hep/MG5_aMC_v2_6_3_2/bin/mg5_aMC  $FILE
+sudo docker exec -it $DockerName /home/hep/mg5amcnlo/bin/mg5_aMC  $FILE
 #############################################################
 ### End of process generator  ###############################
 #############################################################
@@ -135,7 +135,7 @@ cd $WORKINGPATH
 
 sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerName:/var/MG_outputs
 
-sudo docker exec -it $DockerName /home/hep/MG5_aMC_v2_6_3_2/bin/mg5_aMC  $FILE
+sudo docker exec -it $DockerName /home/hep/mg5amcnlo/bin/mg5_aMC  $FILE
 
 #############################################################
 ### End of process generator  ###############################
