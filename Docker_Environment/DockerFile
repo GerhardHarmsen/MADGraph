@@ -1,4 +1,4 @@
-FROM rootproject/root-latest
+FROM rootproject/root
 
 USER root
 
