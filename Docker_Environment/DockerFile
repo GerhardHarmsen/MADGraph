@@ -28,7 +28,8 @@ RUN echo install MadAnalysis5 |  /home/hep/${MG_VERSION}/bin/mg5_aMC
 
 WORKDIR /home/hep/${MG_VERSION}/HEPTools/lhapdf6/share/LHAPDF
 # Download a default PDF
-RUN wget --quiet -O- https://www.hepforge.org/archive/lhapdf/pdfsets/6.2/NNPDF23_lo_as_0130_qed.tar.gz | tar xzf -
+RUN wget -r https://www.hepforge.org/archive/lhapdf/pdfsets/6.2/NNPDF23_lo_as_0130_qed.tar.gz && tar -xzf *.tar
+RUN rm -r *.tar
 
 WORKDIR /var/MG_outputs
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/home/hep/${MG_VERSION}/HEPTools/lib/
