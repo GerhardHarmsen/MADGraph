@@ -1,10 +1,10 @@
 sudo docker pull skaskid470/madgraph
 
-DockerName=MADGraphDocker
+DockerName=MADGraphDocker_Gerhard
 
 cd 
 cd Documents
-mkdir DockerOutput 
+mkdir DockerOutput_Gerhard 
 cd $_
 OUTPUT=$(pwd)
 
@@ -13,12 +13,16 @@ echo $OUTPUT
 mkdir MADGraphScripts 
 cd $_
 
-sudo docker run -dit --rm --name $DockerName -v $OUTPUT/models:/var/UFO_models -v $OUTPUT/outputs:/var/MG_outputs skaskid470/madgraph
+wget https://feynrules.irmp.ucl.ac.be/raw-attachment/wiki/MSSM/sps1a_ufo.tgz && tar -xzf *.tgz
+
+sudo docker run -dit --name $DockerName -v $OUTPUT/models:/var/UFO_models -v $OUTPUT/outputs:/var/MG_outputs skaskid470/madgraph bash
+
+sudo docker cp $OUTPUT/MADGraphScripts/MSSM_UFO $DockerName:/home/hep/mg5amcnlo/models
 
 ######################## Setup directories for easy saving of results ############
 ############## Variables for the scripts #########################################
-BACKGROUNDRUNS=2
-SIGNALRUNS=2
+BACKGROUNDRUNS=20
+SIGNALRUNS=5
 EVENTSPERRUN=10000
 ############## Variables for the scripts #########################################
 ############## Background events #################################################
@@ -38,8 +42,8 @@ define l- = e- mu- ta-
 generate p p > t t~ @0
 add process p p > t t~ j @1
 add process p p > t t~ j j @2
-output ${FILE}
-launch ${FILE} -i
+output Events_${FILE}
+launch Events_${FILE} -i
 multi_run ${BACKGROUNDRUNS}
 1
 4
@@ -79,8 +83,8 @@ define vv = vl vl~
 generate p p > ll vv @0
 add process p p > ll vv j @1
 add process p p > ll vv j j  @2
-output ${FILE}
-launch ${FILE} -i
+output Events_${FILE}
+launch Events_${FILE} -i
 multi_run ${BACKGROUNDRUNS}
 1
 0
@@ -91,8 +95,6 @@ set xqcut = 25
 set etaj = 5
 0
 EOM
-
-cd $WORKINGPATH
 
 sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerName:/var/MG_outputs
 
@@ -115,8 +117,8 @@ define l- = e- mu- ta-
 generate  p p > w+ w- @0
 add process p p > w+ w- j @1
 add process p p > w+ w- j j @2
-output ${FILE}
-launch ${FILE} -i
+output Events_${FILE}
+launch Events_${FILE} -i
 multi_run ${BACKGROUNDRUNS}
 1
 4
@@ -130,8 +132,6 @@ decay w+ > l+ vl
 decay w- > l- vl~
 0
 EOM
-
-cd $WORKINGPATH
 
 sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerName:/var/MG_outputs
 
@@ -160,8 +160,8 @@ import model MSSM_UFO/
 generate p p > mur- mur+ @0
 add process p p > mur- mur+ j @1
 add process p p > mur- mur+ j j @2
-output ${FILE}
-launch ${FILE} -i
+output Events_${FILE}
+launch Events_${FILE} -i
 multi_run ${SIGNALRUNS}
 1
 4
@@ -186,6 +186,7 @@ sudo docker exec -it $DockerName /home/hep/mg5amcnlo/bin/mg5_aMC  $FILE
 done
 
 sudo docker kill $DockerName
+sudo docker rm $DockerName
 
 cd .. 
 sudo rm -r MADGraphScripts
