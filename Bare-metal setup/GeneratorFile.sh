@@ -140,6 +140,7 @@ cd $WORKINGPATH
 ################################## Signal Events ############
 
 for SMUONMASS in 200 400
+do
 cd $DIR
 	
 FILE="PPtoSmuonSmuon_Smuon_Mass_${SMUONMASS}"
@@ -180,3 +181,4 @@ cd $WORKINGPATH
 #############################################################
 ### End of process generator  ###############################
 #############################################################
+done
