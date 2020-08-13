@@ -22,7 +22,6 @@ RUN echo install Delphes | /home/hep/${MG_VERSION}/bin/mg5_aMC
 RUN echo install ExRootAnalysis | /home/hep/${MG_VERSION}/bin/mg5_aMC
 RUN echo install lhapdf6 |  /home/hep/${MG_VERSION}/bin/mg5_aMC
 RUN echo install pythia8 | /home/hep/${MG_VERSION}/bin/mg5_aMC
-RUN echo install MadAnalysis5 |  /home/hep/${MG_VERSION}/bin/mg5_aMC
 
 # disable autoupdate
 # RUN rm /home/hep/${MG_VERSION}/input/.autoupdate
