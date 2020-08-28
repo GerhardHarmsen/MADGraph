@@ -18,8 +18,9 @@ ENV ROOTSYS /usr/local
 ENV PATH $PATH:$ROOTSYS/bin
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$ROOTSYS/lib
 
-RUN  git clone https://github.com/delphes/delphes.git /home/hep/${MG_VERSION}/bin/mg5_aMC/Delphes
-WORKDIR /home/hep/${MG_VERSION}/Delphes
+WORKDIR /home/hep/${MG_VERSION}/bin/mg5_aMC/
+RUN  git clone https://github.com/delphes/delphes.git Delphes
+WORKDIR /home/hep/${MG_VERSION}/bin/mg5_aMC/Delphes
 RUN make
 WORKDIR /home/hep/${MG_VERSION}
 
