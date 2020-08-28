@@ -5,7 +5,7 @@ USER root
 RUN apt-get update
 
 RUN apt-get install -y --no-install-recommends \
-wget ca-certificates python gfortran build-essential ghostscript vim libboost-all-dev bzr rsync
+wget ca-certificates python gfortran build-essential ghostscript vim libboost-all-dev bzr rsync git cmake
 
 WORKDIR /home/hep
 
@@ -18,7 +18,11 @@ ENV ROOTSYS /usr/local
 ENV PATH $PATH:$ROOTSYS/bin
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$ROOTSYS/lib
 
-RUN echo install Delphes | /home/hep/${MG_VERSION}/bin/mg5_aMC
+RUN  git clone https://github.com/delphes/delphes.git /home/hep/${MG_VERSION}/bin/mg5_aMC/Delphes
+WORKDIR /home/hep/${MG_VERSION}/Delphes
+RUN make
+WORKDIR /home/hep/${MG_VERSION}
+
 RUN echo install ExRootAnalysis | /home/hep/${MG_VERSION}/bin/mg5_aMC
 RUN echo install lhapdf6 |  /home/hep/${MG_VERSION}/bin/mg5_aMC
 RUN echo install pythia8 | /home/hep/${MG_VERSION}/bin/mg5_aMC
