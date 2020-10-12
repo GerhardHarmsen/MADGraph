@@ -1,6 +1,10 @@
+BLUE='\033[0;34m'
+NC='\033[0m'
+
 sudo docker pull skaskid470/madgraph
 
 DockerName=MADGraphDocker_Gerhard
+SECONDS=0
 
 cd 
 cd Documents
@@ -13,12 +17,19 @@ echo $OUTPUT
 mkdir MADGraphScripts 
 cd $_
 
-wget https://feynrules.irmp.ucl.ac.be/raw-attachment/wiki/MSSM/sps1a_ufo.tgz && tar -xzf *.tgz
+git clone https://github.com/GerhardHarmsen/MADGraph
+
+cd MADGraph
+cd Docker_Environment
+tar -xzf MSSM_UFO.tgz
 
 sudo docker run -dit --name $DockerName -v $OUTPUT/models:/var/UFO_models -v $OUTPUT/outputs:/var/MG_outputs skaskid470/madgraph bash
 
-sudo docker cp $OUTPUT/MADGraphScripts/MSSM_UFO $DockerName:/home/hep/mg5amcnlo/models
+sudo docker cp $OUTPUT/MADGraphScripts/MADGraph/Docker_Environment/MSSM_UFO $DockerName:/home/hep/mg5amcnlo/models
 
+
+cd ..
+cd ..
 ######################## Setup directories for easy saving of results ############
 ############## Variables for the scripts #########################################
 BACKGROUNDRUNS=20
@@ -26,6 +37,7 @@ SIGNALRUNS=5
 EVENTSPERRUN=10000
 ############## Variables for the scripts #########################################
 ############## Background events #################################################
+
 FILE="PPtoTopTopBar"
 
 /bin/cat <<EOM>$FILE
@@ -35,8 +47,6 @@ FILE="PPtoTopTopBar"
 ##### With $((BACKGROUNDRUNS * EVENTSPERRUN)) events
 ##### xqcut value of 30
 ####################################################################################
-
-
 define l+ = e+ mu+ ta+ 
 define l- = e- mu- ta-
 generate p p > t t~ @0
@@ -46,6 +56,7 @@ output Events_${FILE}
 launch Events_${FILE} -i
 multi_run ${BACKGROUNDRUNS}
 1
+2
 4
 0
 set ebeam = 6500
@@ -60,13 +71,15 @@ EOM
 
 sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerName:/var/MG_outputs
 
-sudo docker exec -it $DockerName /home/hep/mg5amcnlo/bin/mg5_aMC  $FILE
+/bin/cat <<EOM>>'BashFile.sh'
+/home/hep/mg5amcnlo/bin/mg5_aMC $FILE &
+EOM
+
 #############################################################
 ### End of process generator  ###############################
 #############################################################
-	
-FILE="PP_W_LeptonNeutrino"
 
+FILE="PP_W_LeptonNeutrino"
 /bin/cat <<EOM>$FILE
 ####################################################################################
 ##### File Generates the following
@@ -74,8 +87,6 @@ FILE="PP_W_LeptonNeutrino"
 ##### With $((BACKGROUNDRUNS * EVENTSPERRUN)) events
 ##### xqcut value of 25
 ####################################################################################
-
-
 define l+ = e+ mu+ ta+ 
 define l- = e- mu- ta-
 define ll = l+ l-
@@ -87,6 +98,7 @@ output Events_${FILE}
 launch Events_${FILE} -i
 multi_run ${BACKGROUNDRUNS}
 1
+2
 0
 set ebeam = 6500
 set nevents = ${EVENTSPERRUN}
@@ -98,13 +110,15 @@ EOM
 
 sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerName:/var/MG_outputs
 
-sudo docker exec -it $DockerName /home/hep/mg5amcnlo/bin/mg5_aMC  $FILE
+/bin/cat <<EOM>>'BashFile.sh'
+/home/hep/mg5amcnlo/bin/mg5_aMC $FILE &
+EOM
+
 #############################################################
 ### End of process generator  ###############################
 #############################################################
 
 FILE="PP_WW_lvl"
-
 /bin/cat <<EOM>$FILE
 ####################################################################################
 ##### File Generates the following
@@ -114,39 +128,39 @@ FILE="PP_WW_lvl"
 ####################################################################################
 define l+ = e+ mu+ ta+ 
 define l- = e- mu- ta-
-generate  p p > w+ w- @0
-add process p p > w+ w- j @1
-add process p p > w+ w- j j @2
+generate  p p > w+ w-, ( w+ > l+ vl ), ( w- > l- vl~ ) @0
+add process p p > w+ w- j, ( w+ > l+ vl ), ( w- > l- vl~ ) @1
+add process p p > w+ w- j j, ( w+ > l+ vl ), ( w- > l- vl~ ) @2
 output Events_${FILE}
 launch Events_${FILE} -i
 multi_run ${BACKGROUNDRUNS}
 1
-4
+2
 0
 set ebeam = 6500
 set nevents = ${EVENTSPERRUN}
 set ickkw = 1
 set xqcut = 25
 set etaj = 5
-decay w+ > l+ vl
-decay w- > l- vl~
 0
 EOM
 
 sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerName:/var/MG_outputs
 
-sudo docker exec -it $DockerName /home/hep/mg5amcnlo/bin/mg5_aMC  $FILE
+/bin/cat <<EOM>>'BashFile.sh'
+/home/hep/mg5amcnlo/bin/mg5_aMC $FILE &
+EOM
 
 #############################################################
 ### End of process generator  ###############################
 #############################################################	
-
 ################################## Signal Events ############
-
+for NEUTRALINOMASS in 96 195
+do
 for SMUONMASS in 200 400
-do	
-FILE="PPtoSmuonSmuon_Smuon_Mass_${SMUONMASS}"
+do
 
+FILE="PPtoSmuonSmuon_Smuon_Mass_${SMUONMASS}_Neatralino_${NEUTRALINOMASS}"
 /bin/cat <<EOM >$FILE
 ####################################################################################
 ##### File Generates the following
@@ -154,8 +168,6 @@ FILE="PPtoSmuonSmuon_Smuon_Mass_${SMUONMASS}"
 ##### With $((SIGNALRUNS * EVENTSPERRUN)) events
 ##### xqcut value of 55
 ####################################################################################
-
-
 import model MSSM_UFO/
 generate p p > mur- mur+ @0
 add process p p > mur- mur+ j @1
@@ -164,6 +176,7 @@ output Events_${FILE}
 launch Events_${FILE} -i
 multi_run ${SIGNALRUNS}
 1
+2
 4
 0
 decay mur- > mu- n1
@@ -173,20 +186,31 @@ set nevents = ${EVENTSPERRUN}
 set ickkw = 1
 set xqcut = 55
 set etaj = 5
+set mass 2000013 ${SMUONMASS}
+set mass 1000022 ${NEUTRALINOMASS}
 0
 EOM
 
+
 sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerName:/var/MG_outputs
 
-sudo docker exec -it $DockerName /home/hep/mg5amcnlo/bin/mg5_aMC  $FILE
-
-#############################################################
-### End of process generator  ###############################
-#############################################################
+/bin/cat <<EOM>>'BashFile.sh'
+/home/hep/mg5amcnlo/bin/mg5_aMC $FILE &
+EOM
 done
+done
+
+/bin/cat <<EOM>>'BashFile.sh'
+wait
+EOM
+
+sudo docker cp $OUTPUT/MADGraphScripts/BashFile.sh $DockerName:/var/MG_outputs
+sudo docker exec -it $DockerName bash /var/MG_outputs/BashFile.sh 
+
+ELAPSED=" $(($SECONDS / 3600))hrs $((($SECONDS / 60) % 60))min $(($SECONDS % 60))sec"
+echo -e "${BLUE}Job Completed in ${ELAPSED} ${NC}"
 
 sudo docker kill $DockerName
 sudo docker rm $DockerName
-
 cd .. 
 sudo rm -r MADGraphScripts
