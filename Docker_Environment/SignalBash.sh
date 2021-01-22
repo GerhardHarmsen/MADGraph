@@ -53,8 +53,8 @@ import model MSSM_UFO/
 generate p p > mur- mur+ @0
 add process p p > mur- mur+ j @1
 add process p p > mur- mur+ j j @2
-output /Signal/Events_${FILE}
-launch /Signal/Events_${FILE} -i
+output ./Signal/Events_${FILE}
+launch ./Signal/Events_${FILE} -i
 multi_run ${SIGNALRUNS}
 1
 2
