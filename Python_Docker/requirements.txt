@@ -3,3 +3,4 @@ pandas
 tqdm
 uproot
 click
+awkward
