@@ -9,7 +9,6 @@ xgboost
 sklearn
 matplotlib
 tqdm
-itertools
 scipy
 shap
 pickle
