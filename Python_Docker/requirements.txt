@@ -4,3 +4,11 @@ tqdm
 uproot
 click
 awkward
+seaborn
+xgboost
+sklearn
+matplotlib
+tqdm
+itertools
+scipy
+shap
