@@ -11,3 +11,4 @@ matplotlib
 tqdm
 scipy
 shap
+ipython
