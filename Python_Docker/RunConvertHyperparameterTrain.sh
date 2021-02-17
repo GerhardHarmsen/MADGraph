@@ -62,9 +62,9 @@ cd ..
 ####### Start creating bash files to generate events
 ######################## Setup directories for easy saving of results ############
 ############## Variables for the scripts #########################################
-BACKGROUNDRUNS=1
-SIGNALRUNS=1
-EVENTSPERRUN=100
+BACKGROUNDRUNS=20
+SIGNALRUNS=5
+EVENTSPERRUN=10000
 ############## Variables for the scripts #########################################
 ############## Background events #################################################
 
