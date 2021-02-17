@@ -292,13 +292,12 @@ bash ConvertScripts.sh
 bash HyperparameterTrain.sh
 EOM
 
+echo Copied python scripts
+
 sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerNamePython:/usr/src/app
 
 sudo docker exec -it $DockerNamePython bash /usr/src/app/$FILE
 
-echo Copied python scripts
-
-sudo docker exec -it $DockerNamePython bash /usr/src/app/$FILE
 ELAPSED=" $(($SECONDS / 3600))hrs $((($SECONDS / 60) % 60))min $(($SECONDS % 60))sec"
 echo -e "${BLUE}Job Completed in ${ELAPSED} ${NC}"
 ##########################################################################
