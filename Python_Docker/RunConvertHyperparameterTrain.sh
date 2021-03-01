@@ -177,8 +177,11 @@ EOM
 #### Background events setup
 #### Setup signal events
 
-NEUTRALINOMASS=(270 220 190 140 130 140 95 80 60 60 65 55 200 190 180 96 195 96 195)
-SMUONMASS=(360 320 290 240 240 420 500 400 510 200 210 250 450 500 400 200 200 400 400)
+#NEUTRALINOMASS=(270 220 190 140 130 140 95 80 60 60 65 55 200 190 180 96 195 96 195)
+#SMUONMASS=(360 320 290 240 240 420 500 400 510 200 210 250 450 500 400 200 200 400 400)
+
+NEUTRALINOMASS=(175 87 125 100 150 70 100 68 120 150 75 300 500 440 260)
+SMUONMASS=(350 350 375 260 300 350 300 275 475 300 450 310 510 450 275)
 
 len=${#SMUONMASS[@]}
 
@@ -275,13 +278,13 @@ sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerNamePython:/usr/src/app
 
 #### Hyperparameter training
 
-FILE="HyperparameterTrain.sh"
-/bin/cat <<EOM >$FILE
-cd Physics-Machine-Learning-project
-python -c  "import HyperParameterTuning; HyperParameterTuning.CodeToRun(r'/usr/src/app/CSV/',r'/usr/src/app/CSV/Background',r'/usr/src/app/CSV/')"
-EOM
+#FILE="HyperparameterTrain.sh"
+#/bin/cat <<EOM >$FILE
+#cd Physics-Machine-Learning-project
+#python -c  "import HyperParameterTuning; HyperParameterTuning.CodeToRun(r'/usr/src/app/CSV/',r'/usr/src/app/CSV/Background',r'/usr/src/app/CSV/')"
+#EOM
 
-sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerNamePython:/usr/src/app
+#sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerNamePython:/usr/src/app
 
 #### Run the Python scripts in the docker container
 #### I have written it this way so that the sudo password is only requested twice.
@@ -289,7 +292,7 @@ sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerNamePython:/usr/src/app
 FILE='RunPythonScripts'
 /bin/cat <<EOM >$FILE
 bash ConvertScripts.sh
-bash HyperparameterTrain.sh
+#bash HyperparameterTrain.sh
 EOM
 
 echo Copied python scripts
