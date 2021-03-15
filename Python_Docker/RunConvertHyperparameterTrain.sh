@@ -259,7 +259,7 @@ do
 mkdir Events_PPtoSmuonSmuon_Smuon_Mass_${SMUONMASS[$i]}_Neatralino_${NEUTRALINOMASS[$i]}
 cd ..
 cd Physics-Machine-Learning-project
-python -c "import DelphesToCSV; DelphesToCSV.DELPHESTOCSV2(r'/usr/src/app/Signal/Events_PPtoSmuonSmuon_Smuon_Mass_${SMUONMASS[$i]}_Neatralino_${NEUTRALINOMASS[$i]}',r'/usr/src/app/CSV/Events_PPtoSmuonSmuon_Smuon_Mass_${SMUONMASS[$i]}_Neatralino_${NEUTRALINOMASS[$i]}')" &
+python -c "import DelphesToCSV; DelphesToCSV.DELPHESTOCSV2(1, r'/usr/src/app/Signal/Events_PPtoSmuonSmuon_Smuon_Mass_${SMUONMASS[$i]}_Neatralino_${NEUTRALINOMASS[$i]}',r'/usr/src/app/CSV/Events_PPtoSmuonSmuon_Smuon_Mass_${SMUONMASS[$i]}_Neatralino_${NEUTRALINOMASS[$i]}')" &
 cd ..
 cd CSV
 EOM
@@ -269,7 +269,7 @@ done
 mkdir Background
 cd ..
 cd Physics-Machine-Learning-project
-python -c "import DelphesToCSV; DelphesToCSV.DELPHESTOCSV2(r'/usr/src/app/Background',r'/usr/src/app/CSV/Background')" &
+python -c "import DelphesToCSV; DelphesToCSV.DELPHESTOCSV2(0, r'/usr/src/app/Background',r'/usr/src/app/CSV/Background')" &
 cd ..
 wait 
 EOM
