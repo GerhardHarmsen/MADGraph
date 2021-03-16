@@ -177,11 +177,11 @@ EOM
 #### Background events setup
 #### Setup signal events
 
-#NEUTRALINOMASS=(270 220 190 140 130 140 95 80 60 60 65 55 200 190 180 96 195 96 195)
-#SMUONMASS=(360 320 290 240 240 420 500 400 510 200 210 250 450 500 400 200 200 400 400)
+#NEUTRALINOMASS=()
+#SMUONMASS=()
 
-NEUTRALINOMASS=(175 87 125 100 150 70 100 68 120 150 75 300 500 440 260)
-SMUONMASS=(350 350 375 260 300 350 300 275 475 300 450 310 510 450 275)
+NEUTRALINOMASS=(175 87 125 100 150 70 100 68 120 150 75 300 500 440 260 270 220 190 140 130 140 95 80 60 60 65 55 200 190 180 96 195 96 195)
+SMUONMASS=(350 350 375 260 300 350 300 275 475 300 450 310 510 450 275 360 320 290 240 240 420 500 400 510 200 210 250 450 500 400 200 200 400 400)
 
 len=${#SMUONMASS[@]}
 
@@ -226,13 +226,17 @@ sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerNameMADGraph:/var/MG_outputs
 /home/hep/mg5amcnlo/bin/mg5_aMC $FILE &
 EOM
 done
+
 /bin/cat <<EOM>>'BashFile.sh'
 wait
 EOM
+
 sudo docker cp $OUTPUT/MADGraphScripts/BashFile.sh $DockerNameMADGraph:/var/MG_outputs
 sudo docker exec -it $DockerNameMADGraph bash /var/MG_outputs/BashFile.sh 
+
 ELAPSED=" $(($SECONDS / 3600))hrs $((($SECONDS / 60) % 60))min $(($SECONDS % 60))sec"
 echo -e "${BLUE}Job Completed in ${ELAPSED} ${NC}"
+
 sudo docker kill $DockerNameMADGraph
 sudo docker rm $DockerNameMADGraph
 
@@ -295,9 +299,11 @@ bash ConvertScripts.sh
 #bash HyperparameterTrain.sh
 EOM
 
-echo Copied python scripts
+
 
 sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerNamePython:/usr/src/app
+
+echo Copied python scripts
 
 sudo docker exec -it $DockerNamePython bash /usr/src/app/$FILE
 
