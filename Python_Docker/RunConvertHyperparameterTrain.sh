@@ -1,6 +1,9 @@
 BLUE='\033[0;34m'
 NC='\033[0m'
 
+#########################################################
+RunGenerate=false
+
 ####################################################################################
 ##### Pull the required Docker files#####
 echo -e "${BLUE}Pulling Docker file for generating events${NC}"
@@ -65,9 +68,13 @@ cd ..
 BACKGROUNDRUNS=20
 SIGNALRUNS=5
 EVENTSPERRUN=10000
+
+NEUTRALINOMASS=(175 87 125 100 150 70 100 68 120 150 75 300 500 440 260 270 220 190 140 130 140 95 80 60 60 65 55 200 190 180 96 195 96 195)
+SMUONMASS=(350 350 375 260 300 350 300 275 475 300 450 310 510 450 275 360 320 290 240 240 420 500 400 510 200 210 250 450 500 400 200 200 400 400)
 ############## Variables for the scripts #########################################
 ############## Background events #################################################
-
+if [ "$RunGenerate" = true ]
+then
 FILE="PPtoTopTopBar"
 
 /bin/cat <<EOM>$FILE
@@ -177,12 +184,6 @@ EOM
 #### Background events setup
 #### Setup signal events
 
-#NEUTRALINOMASS=()
-#SMUONMASS=()
-
-NEUTRALINOMASS=(175 87 125 100 150 70 100 68 120 150 75 300 500 440 260 270 220 190 140 130 140 95 80 60 60 65 55 200 190 180 96 195 96 195)
-SMUONMASS=(350 350 375 260 300 350 300 275 475 300 450 310 510 450 275 360 320 290 240 240 420 500 400 510 200 210 250 450 500 400 200 200 400 400)
-
 len=${#SMUONMASS[@]}
 
 for ((i=0; i<$len; i++))
@@ -233,6 +234,7 @@ EOM
 
 sudo docker cp $OUTPUT/MADGraphScripts/BashFile.sh $DockerNameMADGraph:/var/MG_outputs
 sudo docker exec -it $DockerNameMADGraph bash /var/MG_outputs/BashFile.sh 
+fi
 
 ELAPSED=" $(($SECONDS / 3600))hrs $((($SECONDS / 60) % 60))min $(($SECONDS % 60))sec"
 echo -e "${BLUE}Job Completed in ${ELAPSED} ${NC}"
