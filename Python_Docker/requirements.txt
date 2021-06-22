@@ -13,3 +13,5 @@ scipy
 shap
 ipython
 psutil
+vector
+mt2
