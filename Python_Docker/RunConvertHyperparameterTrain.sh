@@ -69,8 +69,12 @@ BACKGROUNDRUNS=20
 SIGNALRUNS=5
 EVENTSPERRUN=10000
 
-NEUTRALINOMASS=(175 87 125 100 150 70 100 68 120 150 75 300 500 440 260 270 220 190 140 130 140 95 80 60 60 65 55 200 190 180 96 195 96 195)
-SMUONMASS=(350 350 375 260 300 350 300 275 475 300 450 310 510 450 275 360 320 290 240 240 420 500 400 510 200 210 250 450 500 400 200 200 400 400)
+#NEUTRALINOMASS=(175 87 125 100 150 70 100 68 120 150 75 300 500 440 260 270 220 190 140 130 140 95 80 60 60 65 55 200 190 180 96 195 96 195)
+#SMUONMASS=(350 350 375 260 300 350 300 275 475 300 450 310 510 450 275 360 320 290 240 240 420 500 400 510 200 210 250 450 500 400 200 200 400 400)
+
+NEUTRALINOMASS=(270 220 190 140 130 140 95 80 60 60 65 55 200 190 180 195 96 195 96 175 87 125 100 70 100 68 120 150 75 300 500 440 260)
+SMUONMASS=(360 320 290 240 240 420 500 400 510 200 210 250 450 500 400 400 400 200 200 350 350 375 260 350 300 275 475 300 450 310 510 450 275)
+
 ############## Variables for the scripts #########################################
 ############## Background events #################################################
 if [ "$RunGenerate" = true ]
@@ -189,7 +193,7 @@ len=${#SMUONMASS[@]}
 for ((i=0; i<$len; i++))
 do
 
-FILE="PPtoSmuonSmuon_Smuon_Mass_${SMUONMASS[$i]}_Neatralino_${NEUTRALINOMASS[$i]}"
+FILE="PPtoSmuonSmuon_Smuon_Mass_${SMUONMASS[$i]}_Neutralino_${NEUTRALINOMASS[$i]}"
 /bin/cat <<EOM >>$FILE
 ####################################################################################
 ##### File Generates the following
@@ -262,10 +266,10 @@ for ((i=0; i<$len; i++))
 do
 
 /bin/cat <<EOM >>$FILE
-mkdir Events_PPtoSmuonSmuon_Smuon_Mass_${SMUONMASS[$i]}_Neatralino_${NEUTRALINOMASS[$i]}
+mkdir Events_PPtoSmuonSmuon_Smuon_Mass_${SMUONMASS[$i]}_Neutralino_${NEUTRALINOMASS[$i]}
 cd ..
 cd Physics-Machine-Learning-project
-python -c "import DelphesToCSV; DelphesToCSV.DELPHESTOCSV2(1, r'/usr/src/app/Signal/Events_PPtoSmuonSmuon_Smuon_Mass_${SMUONMASS[$i]}_Neatralino_${NEUTRALINOMASS[$i]}',r'/usr/src/app/CSV/Events_PPtoSmuonSmuon_Smuon_Mass_${SMUONMASS[$i]}_Neatralino_${NEUTRALINOMASS[$i]}')" &
+python -c "import DelphesToCSV; DelphesToCSV.DELPHESTOCSV2(1, r'/usr/src/app/Signal/Events_PPtoSmuonSmuon_Smuon_Mass_${SMUONMASS[$i]}_Neutralino_${NEUTRALINOMASS[$i]}',r'/usr/src/app/CSV/Events_PPtoSmuonSmuon_Smuon_Mass_${SMUONMASS[$i]}_Neutralino_${NEUTRALINOMASS[$i]}')" &
 cd ..
 cd CSV
 EOM
