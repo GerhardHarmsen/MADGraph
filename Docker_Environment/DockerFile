@@ -18,15 +18,16 @@ ENV ROOTSYS /usr/local
 ENV PATH $PATH:$ROOTSYS/bin
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$ROOTSYS/lib
 
-WORKDIR /home/hep/${MG_VERSION}
-RUN  git clone https://github.com/delphes/delphes.git Delphes
-WORKDIR /home/hep/${MG_VERSION}/Delphes
-RUN make
-WORKDIR /home/hep/${MG_VERSION}
+# WORKDIR /home/hep/${MG_VERSION}
+# RUN  git clone https://github.com/delphes/delphes.git Delphes
+# WORKDIR /home/hep/${MG_VERSION}/Delphes
+# RUN make
+# WORKDIR /home/hep/${MG_VERSION}
 
 RUN echo install ExRootAnalysis | /home/hep/${MG_VERSION}/bin/mg5_aMC
 RUN echo install lhapdf6 |  /home/hep/${MG_VERSION}/bin/mg5_aMC
 RUN echo install pythia8 | /home/hep/${MG_VERSION}/bin/mg5_aMC
+RUN echo install Delphes | /home/hep/${MG_VERSION}/bin/mg5_aMC
 
 # disable autoupdate
 # RUN rm /home/hep/${MG_VERSION}/input/.autoupdate
