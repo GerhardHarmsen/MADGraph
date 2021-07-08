@@ -288,13 +288,26 @@ sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerNamePython:/usr/src/app
 
 #### Hyperparameter training
 
-#FILE="HyperparameterTrain.sh"
-#/bin/cat <<EOM >$FILE
-#cd Physics-Machine-Learning-project
-#python -c  "import HyperParameterTuning; HyperParameterTuning.CodeToRun(r'/usr/src/app/CSV/',r'/usr/src/app/CSV/Background',r'/usr/src/app/CSV/')"
-#EOM
+FILE="HyperparameterTrain.sh"
+/bin/cat <<EOM >$FILE
+cd Physics-Machine-Learning-project
 
-#sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerNamePython:/usr/src/app
+EOM
+
+
+for ((i=0; i<$len; i++))
+do
+/bin/cat <<EOM >>$FILE
+python -c  "import HyperParameterTuning; HyperParameterTuning.HyperParameters(${SMUONMASS[$i]},${NEUTRALINOMASS[$i]},r'/usr/src/app/CSV/',r'/usr/src/app/CSV/Background')" &
+EOM
+
+/bin/cat <<EOM >>$FILE
+cd..
+wait
+EOM
+
+done
+sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerNamePython:/usr/src/app
 
 #### Run the Python scripts in the docker container
 #### I have written it this way so that the sudo password is only requested twice.
@@ -302,7 +315,7 @@ sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerNamePython:/usr/src/app
 FILE='RunPythonScripts'
 /bin/cat <<EOM >$FILE
 bash ConvertScripts.sh
-#bash HyperparameterTrain.sh
+bash HyperparameterTrain.sh
 EOM
 
 
