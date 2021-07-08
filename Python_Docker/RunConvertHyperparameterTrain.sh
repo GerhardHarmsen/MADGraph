@@ -301,12 +301,13 @@ do
 python -c  "import HyperParameterTuning; HyperParameterTuning.HyperParameters(${SMUONMASS[$i]},${NEUTRALINOMASS[$i]},r'/usr/src/app/CSV/',r'/usr/src/app/CSV/Background')" &
 EOM
 
+done
+
 /bin/cat <<EOM >>$FILE
 cd..
 wait
 EOM
 
-done
 sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerNamePython:/usr/src/app
 
 #### Run the Python scripts in the docker container
