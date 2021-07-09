@@ -75,6 +75,8 @@ EVENTSPERRUN=10000
 NEUTRALINOMASS=(270 220 190 140 130 140 95 80 60 60 65 55 200 190 180 195 96 195 96 175 87 125 100 70 100 68 120 150 75 300 500 440 260)
 SMUONMASS=(360 320 290 240 240 420 500 400 510 200 210 250 450 500 400 400 400 200 200 350 350 375 260 350 300 275 475 300 450 310 510 450 275)
 
+len=${#SMUONMASS[@]}
+
 ############## Variables for the scripts #########################################
 ############## Background events #################################################
 if [ "$RunGenerate" = true ]
@@ -306,6 +308,9 @@ done
 /bin/cat <<EOM >>$FILE
 cd..
 wait
+cd Physics-Machine-Learning-project
+python -c  "import HyperParameterTuning; HyperParameterTuning.CombineJSON(r'/usr/src/app/CSV/',r'/usr/src/app/CSV/')" 
+cd ..
 EOM
 
 sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerNamePython:/usr/src/app
