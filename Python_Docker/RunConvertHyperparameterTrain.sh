@@ -319,10 +319,9 @@ sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerNamePython:/usr/src/app
 
 FILE='RunPythonScripts'
 /bin/cat <<EOM >$FILE
-bash ConvertScripts.sh
 bash HyperparameterTrain.sh
 EOM
-
+#bash ConvertScripts.sh
 
 
 sudo docker cp $OUTPUT/MADGraphScripts/$FILE $DockerNamePython:/usr/src/app
