@@ -300,14 +300,13 @@ EOM
 for ((i=0; i<$len; i++))
 do
 /bin/cat <<EOM >>$FILE
-python -c  "import HyperParameterTuning; HyperParameterTuning.HyperParameters(${SMUONMASS[$i]},${NEUTRALINOMASS[$i]},r'/usr/src/app/CSV/',r'/usr/src/app/CSV/Background')" &
+python -c  "import HyperParameterTuning; HyperParameterTuning.HyperParameters(${SMUONMASS[$i]},${NEUTRALINOMASS[$i]},r'/usr/src/app/CSV/',r'/usr/src/app/CSV/Background')" 
 EOM
 
 done
 
 /bin/cat <<EOM >>$FILE
 cd..
-wait
 cd Physics-Machine-Learning-project
 python -c  "import HyperParameterTuning; HyperParameterTuning.CombineJSON(r'/usr/src/app/CSV/',r'/usr/src/app/CSV/')" 
 cd ..
