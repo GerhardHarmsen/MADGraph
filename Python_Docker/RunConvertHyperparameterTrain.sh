@@ -306,8 +306,6 @@ EOM
 done
 
 /bin/cat <<EOM >>$FILE
-cd..
-cd Physics-Machine-Learning-project
 python -c  "import HyperParameterTuning; HyperParameterTuning.CombineJSON(r'/usr/src/app/CSV/',r'/usr/src/app/CSV/')" 
 cd ..
 EOM
